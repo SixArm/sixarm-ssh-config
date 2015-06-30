@@ -5,13 +5,92 @@
 #
 #     man sshd_config
 #
+# Or see the man pages:
+#
+#  * http://www.openbsd.org/cgi-bin/man.cgi/OpenBSD-current/man5/ssh_config.5
+#  * http://www.openbsd.org/cgi-bin/man.cgi/OpenBSD-current/man5/sshd_config.5
+#
 # Thanks:
 #
 #  * http://www.noah.org/wiki/SSH_config
 #
 ##
 
-# UseDNS:
+# OpenSSH TCPKeepAlive
+#
+# Specifies whether the system should send TCP keepalive messages to the
+# other side. If they are sent, death of the connection or crash of one of
+# the machines will be properly noticed. However, this means that
+# connections will die if the route is down temporarily, and some people
+# find it annoying.
+#
+# The default is "yes" (to send TCP keepalive messages), and the client
+# will notice if the network goes down or the remote host dies. This is
+# important in scripts, and many users want it too.
+#
+# To disable TCP keepalive messages, the value should be set to "no".
+#
+# Commentary:
+#
+# TCPKeepAlive is dumb. It forces sessions to terminate after a time out.
+# ClientAlive settings are probably closer to what most people want.
+#
+# http://www.noah.org/wiki/SSH_config
+#
+TCPKeepAlive no
+
+# OpenSSH ClientAliveInterval
+#
+# Sets a timeout interval in seconds after which if no data has been
+# received from the client, sshd will send a message through the
+# encrypted channel to request a response from the client.
+#
+# The default is 0, indicating  messages will not be sent to the client.
+#
+# This option applies to protocol version 2 only.
+#
+# Commentary:
+#
+# Using an OpenSSH server's ClientAliveInterval, it is possible for
+# the ssh server to send periodic "keep alive" messages to the ssh
+# client, keeping the connection open indefinitely. This is useful
+# when a firewall or other packet filtering device drops idle
+# connections after a certain period of time. Note that this is
+# different from the KeepAlive directive in ssh_config.
+#
+# Client Alive messages are sent over the encrypted link, so they
+# cannot be blocked or spoofed by a firewall. These settings tell
+# the server to check the client every 30 seconds. If the client
+# does not respond 40 times in a row then the session is closed.
+# This allows for up to 20 minutes of network interruption.
+#
+ClientAliveInterval 30
+ClientAliveCountMax 40
+
+# Do not set MaxAuthTries to '''1''' because SSH first tries
+# public key authentication which counts against the number
+# of failed tries, so if the key fails then sshd will disconnect
+# and never attempt to ask for a password.
+#
+MaxAuthTries 2
+
+# Bot scripts often check specific accounts for weak passwords,
+# so we deny these usernames (and we never use them for SSH).
+# This is purely for security convenience.
+#
+DenyUsers root test admin guest nobody www www-data
+
+# For extra security, allow access only to specific users.
+# Replace "user1 user2 user3" with a list of users to allow.
+#AllowUsers user1 user2 user3
+
+##
+#
+# OpenSSH sshd
+#
+##
+
+# UseDNS
 #
 # Specifies whether sshd(8) should look up the remote host name and
 # check that the resolved host name for the remote IP address maps
@@ -45,28 +124,44 @@
 #
 UseDNS no
 
-# TCPKeepAlive:
+# AcceptEnv
 #
-# Specifies whether the system should send TCP keepalive messages to the
-# other side. If they are sent, death of the connection or crash of one of
-# the machines will be properly noticed. However, this means that
-# connections will die if the route is down temporarily, and some people
-# find it annoying.
+# Specifies what environment variables sent by the client will be
+# copied into the session's environ(7). See SendEnv in ssh_config(5)
+# for how to configure the client.
 #
-# The default is "yes" (to send TCP keepalive messages), and the client
-# will notice if the network goes down or the remote host dies. This is
-# important in scripts, and many users want it too.
+# Note that environment passing is only supported for protocol 2, and
+# that the TERM environment variable is always sent whenever the
+# client requests a pseudo-terminal as it is required by the protocol.
 #
-# To disable TCP keepalive messages, the value should be set to "no".
+# Variables are specified by name, which may contain the wildcard
+# characters ‘*’ and ‘?’. Multiple environment variables may be
+# separated by whitespace or spread across multiple AcceptEnv
+# directives.
+#
+# Be warned that some environment variables could be used to bypass
+# restricted user environments. For this reason, care should be taken
+# in the use of this directive.
+#
+# The default is not to accept any environment variables.
 #
 # Commentary:
 #
-# TCPKeepAlive is dumb. It may seem counterintuitive to shut it off, but it
-# will actually force sessions to terminate after a time out.
+# We want locale environment variables, such as language settings.
 #
-# ClientAlive settings are probably closer to what most people expect when
-# they think of "keep alive".
+AcceptEnv LANG LC_*
+
+# PermitTunnel
 #
-# http://www.noah.org/wiki/SSH_config
+# Specifies whether tun(4) device forwarding is allowed. The argument
+# must be “yes”, “point-to-point” (layer 3), “ethernet” (layer 2), or
+# “no”. Specifying “yes” permits both “point-to-point” and “ethernet”.
 #
-TCPKeepAlive no
+# The default is “no”. Independent of this setting, the permissions of
+# the selected tun(4) device must allow access to the user.
+#
+# Commentary:
+#
+# We enable the tunnel because it's needed for VPN.
+#
+PermitTunnel yes
