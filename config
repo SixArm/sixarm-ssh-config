@@ -1,0 +1,72 @@
+##
+# SSH config
+#
+# For details about these settings:
+#
+#     man sshd_config
+#
+# Thanks:
+#
+#  * http://www.noah.org/wiki/SSH_config
+#
+##
+
+# UseDNS:
+#
+# Specifies whether sshd(8) should look up the remote host name and
+# check that the resolved host name for the remote IP address maps
+# back to the very same IP address.  The default is "yes".
+#
+# Commentary:
+#
+# This option is mostly useless. Setting it off speeds up logins.
+#
+# If the client machines are out there on the Internet, there is a high
+# chance that they don't have any reverse DNS, their reverse DNS doesn't
+# resolve forward, or their DNS doesn't provide any information other than
+# "belongs to this ISP" which the IP address already tells you.
+#
+# In typical configurations, DNS is only used for logging. It can be used
+# for authentication, but only if IgnoreRhosts no is specified in
+# sshd_config. This is for compatibility with old installations that used
+# rsh, where you can say “the user called bob on the machine called
+# darkstar may log in as alice without showing any credentials” (by writing
+# darkstar bob in ~alice/.rhosts). It is only secure if you trust all the
+# machines that may possibly be connecting to the ssh server. In other
+# words, this is very very rarely usable in a secure way.
+#
+# Given that the DNS lookup doesn't provide any useful information except
+# in very peculiar circumstances, it should be turned off. As far as I can
+# tell, the only reason it's on by default is that it's technically more
+# secure (if you're concerned about authentication, not availability), even
+# though that only applies to a tiny set of circumstances.
+#
+# http://unix.stackexchange.com/questions/56941/what-is-the-point-of-sshd-usedns-option
+#
+UseDNS no
+
+# TCPKeepAlive:
+#
+# Specifies whether the system should send TCP keepalive messages to the
+# other side. If they are sent, death of the connection or crash of one of
+# the machines will be properly noticed. However, this means that
+# connections will die if the route is down temporarily, and some people
+# find it annoying.
+#
+# The default is "yes" (to send TCP keepalive messages), and the client
+# will notice if the network goes down or the remote host dies. This is
+# important in scripts, and many users want it too.
+#
+# To disable TCP keepalive messages, the value should be set to "no".
+#
+# Commentary:
+#
+# TCPKeepAlive is dumb. It may seem counterintuitive to shut it off, but it
+# will actually force sessions to terminate after a time out.
+#
+# ClientAlive settings are probably closer to what most people expect when
+# they think of "keep alive".
+#
+# http://www.noah.org/wiki/SSH_config
+#
+TCPKeepAlive no
