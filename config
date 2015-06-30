@@ -3,16 +3,13 @@
 #
 # For details about these settings:
 #
+#     man ssh_config
 #     man sshd_config
 #
-# Or see the man pages:
+# Links to the man pages:
 #
 #  * http://www.openbsd.org/cgi-bin/man.cgi/OpenBSD-current/man5/ssh_config.5
 #  * http://www.openbsd.org/cgi-bin/man.cgi/OpenBSD-current/man5/sshd_config.5
-#
-# Thanks:
-#
-#  * http://www.noah.org/wiki/SSH_config
 #
 ##
 
@@ -38,6 +35,68 @@
 # http://www.noah.org/wiki/SSH_config
 #
 TCPKeepAlive no
+
+# Compression
+#
+# Specifies whether compression is allowed, or delayed until the user
+# has authenticated successfully.
+#
+# The argument must be "yes", "delayed", or "no".
+#
+# The default is "delayed". (N.b. this seems to vary on systems.)
+#
+# Commentary Pro:
+#
+# Simple compression is easy for modern CPUs, and even on a fast
+# network it is faster to compress data first before sending it over
+# the network instead of leaving it uncompressed.
+#
+# How much faster is it? I used `cat some-50mb-long.log` to output the
+# content of a 50mb log file directly to my ssh session and saw 3x speed
+# on compressed data of a normal web server log file.
+#
+# http://blog.tcs.de/speed-up-ssh-connections-with-compression-on-os-x/
+#
+# Commentary Con:
+#
+# When copying some large files between hosts at our rack I noticed
+# some pretty poor transfer speeds. Having recently forked out $70 for
+# a rack mount gigabit switch I wondered what was slowing things.
+#
+# It seems ssh was trying to help out by compressing everything
+# however compressing the data took more than twice as long as
+# transferring the uncompressed data. I proved this by disabling
+# compression at the commandline and seeing the transfer speed more
+# than triple.
+#
+# http://codemode.blogspot.com/2006/12/ssh-default-compression-can-slow-you.html
+#
+# Commentary Con:
+#
+# Consider the disastrous impact of ssh's traffic compression, which
+# surprisingly slows down the transfer of roughly 42% in the case of
+# scp and even 270% in the tar over ssh test, and the tar gzip
+# compression, which results in transfers being 87% faster over ssh
+# and 134.38% over nc.
+#
+# http://www.spikelab.org/blog/transfer-largedata-scp-tarssh-tarnc-compared.html
+#
+# Commentary Advice:
+#
+# These days, for most people, I'd suggest using it only as needed,
+# typically for links of less than 5-10mbps and only when passing a
+# lot of bulk data (transfers of not-already-compressed files, X11 or
+# VNC forwarding, things like that).
+#
+# http://askubuntu.com/questions/6770/does-ssh-use-any-compression
+#
+# Conclusion:
+#
+# We set compression off. When we want compression, on a case-by-case basis,
+# we set it per host, or set it on the command line by using the -C flag.
+#
+Compression no
+#CompressionLevel 6
 
 # OpenSSH ClientAliveInterval
 #
