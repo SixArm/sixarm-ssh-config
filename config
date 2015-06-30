@@ -27,7 +27,7 @@
 #
 # To disable TCP keepalive messages, the value should be set to "no".
 #
-# Commentary:
+# Comment:
 #
 # TCPKeepAlive is dumb. It forces sessions to terminate after a time out.
 # ClientAlive settings are probably closer to what most people want.
@@ -45,7 +45,7 @@ TCPKeepAlive no
 #
 # The default is "delayed". (N.b. this seems to vary on systems.)
 #
-# Commentary Pro:
+# Comment Pro:
 #
 # Simple compression is easy for modern CPUs, and even on a fast
 # network it is faster to compress data first before sending it over
@@ -57,7 +57,7 @@ TCPKeepAlive no
 #
 # http://blog.tcs.de/speed-up-ssh-connections-with-compression-on-os-x/
 #
-# Commentary Con:
+# Comment Con:
 #
 # When copying some large files between hosts at our rack I noticed
 # some pretty poor transfer speeds. Having recently forked out $70 for
@@ -71,7 +71,7 @@ TCPKeepAlive no
 #
 # http://codemode.blogspot.com/2006/12/ssh-default-compression-can-slow-you.html
 #
-# Commentary Con:
+# Comment Con:
 #
 # Consider the disastrous impact of ssh's traffic compression, which
 # surprisingly slows down the transfer of roughly 42% in the case of
@@ -81,7 +81,7 @@ TCPKeepAlive no
 #
 # http://www.spikelab.org/blog/transfer-largedata-scp-tarssh-tarnc-compared.html
 #
-# Commentary Advice:
+# Comment Advice:
 #
 # These days, for most people, I'd suggest using it only as needed,
 # typically for links of less than 5-10mbps and only when passing a
@@ -108,7 +108,7 @@ Compression no
 #
 # This option applies to protocol version 2 only.
 #
-# Commentary:
+# Comment:
 #
 # Using an OpenSSH server's ClientAliveInterval, it is possible for
 # the ssh server to send periodic "keep alive" messages to the ssh
@@ -155,7 +155,7 @@ DenyUsers root test admin guest nobody www www-data
 # check that the resolved host name for the remote IP address maps
 # back to the very same IP address.  The default is "yes".
 #
-# Commentary:
+# Comment:
 #
 # This option is mostly useless. Setting it off speeds up logins.
 #
@@ -204,7 +204,7 @@ UseDNS no
 #
 # The default is not to accept any environment variables.
 #
-# Commentary:
+# Comment:
 #
 # We want locale environment variables, such as language settings.
 #
@@ -219,7 +219,7 @@ AcceptEnv LANG LC_*
 # The default is “no”. Independent of this setting, the permissions of
 # the selected tun(4) device must allow access to the user.
 #
-# Commentary:
+# Comment:
 #
 # We enable the tunnel because it's needed for VPN.
 #
