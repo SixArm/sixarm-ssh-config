@@ -13,6 +13,63 @@
 #
 ##
 
+# SendEnv
+#
+# Specifies what variables from the local environ(7) should be sent to
+# the server. Note that environment passing is only supported for
+# protocol 2. The server must also support it, and the server must be
+# configured to accept these environment variables.
+#
+# Note that the TERM environment variable is always sent whenever a
+# pseudo-terminal is requested as it is required by the protocol.
+#
+# Refer to sshd_config(5) AcceptEnv for how to configure the server.
+#
+# Variables are specified by name, which may contain wildcard
+# characters. Multiple environment variables may be separated by
+# whitespace or spread across multiple SendEnv directives.
+#
+# The default is not to send any environment variables.
+#
+# Comment:
+#
+# We want to send our locale settings, e.g. our languages.
+#
+SendEnv LANG LC_*
+
+# Sets a timeout interval in seconds after which if no data has been
+# received from the server, ssh(1) will send a message through the
+# encrypted channel to request a response from the server. The default
+# is 0, indicating that these messages will not be sent to the server.
+# This option applies to protocol version 2 only.
+#
+# Comment:
+#
+# This helps prevent disconnects.
+#
+# Equivalent to the ClientAlive* settings on the server.
+#
+ServerAliveInterval 60
+
+# ServerAliveCountMax
+#
+# Sets the number of server alive messages (see below) which may be
+# sent without ssh(1) receiving any messages back from the server. If
+# this threshold is reached while server alive messages are being sent,
+# ssh will disconnect from the server, terminating the session. It is
+# important to note that the use of server alive messages is very
+# different from TCPKeepAlive (below). The server alive messages are
+# sent through the encrypted channel and therefore will not be
+# spoofable. The TCP keepalive option enabled by TCPKeepAlive is
+# spoofable. The server alive mechanism is valuable when the client or
+# server depend on knowing when a connection has become inactive. The
+# default value is 3. If, for example, ServerAliveInterval (see below)
+# is set to 15 and ServerAliveCountMax is left at the default, if the
+# server becomes unresponsive, ssh will disconnect after approximately
+# 45 seconds. This option applies to protocol version 2 only.
+#
+ServerAliveCountMax 120
+
 # TCPKeepAlive
 #
 # Specifies whether the system should send TCP keepalive messages to the
@@ -38,12 +95,9 @@ TCPKeepAlive no
 
 # Compression
 #
-# Specifies whether compression is allowed, or delayed until the user
-# has authenticated successfully.
+# Specifies whether compression is allowed or not.
 #
-# The argument must be "yes", "delayed", or "no".
-#
-# The default is "delayed". (N.b. this seems to vary on systems.)
+# The argument must be “yes” or “no”. The default is “no”.
 #
 # Comment Pro:
 #
@@ -97,49 +151,16 @@ TCPKeepAlive no
 #
 Compression no
 
-# OpenSSH ClientAliveInterval
-#
-# Sets a timeout interval in seconds after which if no data has been
-# received from the client, sshd will send a message through the
-# encrypted channel to request a response from the client.
-#
-# The default is 0, indicating  messages will not be sent to the client.
-#
-# This option applies to protocol version 2 only.
-#
-# Comment:
-#
-# Using an OpenSSH server's ClientAliveInterval, it is possible for
-# the ssh server to send periodic "keep alive" messages to the ssh
-# client, keeping the connection open indefinitely. This is useful
-# when a firewall or other packet filtering device drops idle
-# connections after a certain period of time. Note that this is
-# different from the KeepAlive directive in ssh_config.
-#
-# Client Alive messages are sent over the encrypted link, so they
-# cannot be blocked or spoofed by a firewall. These settings tell
-# the server to check the client every 30 seconds. If the client
-# does not respond 40 times in a row then the session is closed.
-# This allows for up to 20 minutes of network interruption.
-#
-ClientAliveInterval 30
-ClientAliveCountMax 40
-
-Host *
 # This fixes slow logins. Don't use this if you use Kerberos or GSSAPI.
 GSSAPIAuthentication no
-# This helps prevent disconnects. Equivalent to the ClientAlive* settings on the serve
-ServerAliveInterval 60
-ServerAliveCountMax 120
-# This is counter-intuitive. TCPKeepAlive should be set to no to help eliminate disconnects.
-TCPKeepAlive no
+
 # Allow agent authentication to chain through more than one server.
 ForwardAgent yes
+
 # This is equivalent to -X `ssh` option -- limited X11.
 ForwardX11 yes
+
 # This is equivalent to -Y `ssh` option -- unlimited X11. This can be compromise security.
 # Note that both ForwardX11 and ForwardX11Trusted must be set to yes to silently compromise security.
 # If you set only ForwardX11Trusted to yes then you still must use the '-Y' option on the ssh command-line.
 #ForwardX11Trusted yes
-# This passes some environment variables along to the remote host.
-SendEnv LANG LC_*
