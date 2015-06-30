@@ -9,20 +9,14 @@ If you would like to contribute help, the next section is for you.
 
 ## Contributing to the source
 
-We love pull requests for improvments to the source code and documentation.
+We love pull requests for improvements.
 
 There are three easy steps:
 
-1. Fork the repo. 
+1. Fork the repo.
 
-  * Before you do any work please run our existing tests to make sure the code runs cleanly.
+2. Push your fork.
 
-2. Work as you like. 
+3. Send us a pull request.
 
-   * Please create tests. This helps us know that all your code runs cleanly.
-
-3. Push to your fork and submit a pull request.
-
-   * We'll take a look as soon as we can; this is typically within a business day.
-
-Thank you again!
+Thank you!

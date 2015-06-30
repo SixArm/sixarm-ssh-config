@@ -1,11 +1,15 @@
-# SixArm.com » SSH » Config
+# SixArm.com » SSH » ssh_config file
 
 * Repo: <http://github.com/sixarm/sixarm_ssh_config>
 * Email: Joel Parker Henderson, <joel@sixarm.com>
 
 ## Introduction
 
-This is our SSH config file.
+Our SSH configuration files are in two repos:
+
+  * `sixarm_ssh_config` for the client configuration.
+
+  * `sixarm_sshd_config` for the server configuration.
 
 Take what you need, suggest updates as you can, and when you
 do your own Gemfile we recommend specifying your gem versions.

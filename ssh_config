@@ -13,7 +13,7 @@
 #
 ##
 
-# OpenSSH TCPKeepAlive
+# TCPKeepAlive
 #
 # Specifies whether the system should send TCP keepalive messages to the
 # other side. If they are sent, death of the connection or crash of one of
@@ -96,7 +96,6 @@ TCPKeepAlive no
 # we set it per host, or set it on the command line by using the -C flag.
 #
 Compression no
-#CompressionLevel 6
 
 # OpenSSH ClientAliveInterval
 #
@@ -126,101 +125,21 @@ Compression no
 ClientAliveInterval 30
 ClientAliveCountMax 40
 
-# Do not set MaxAuthTries to '''1''' because SSH first tries
-# public key authentication which counts against the number
-# of failed tries, so if the key fails then sshd will disconnect
-# and never attempt to ask for a password.
-#
-MaxAuthTries 2
-
-# Bot scripts often check specific accounts for weak passwords,
-# so we deny these usernames (and we never use them for SSH).
-# This is purely for security convenience.
-#
-DenyUsers root test admin guest nobody www www-data
-
-# For extra security, allow access only to specific users.
-# Replace "user1 user2 user3" with a list of users to allow.
-#AllowUsers user1 user2 user3
-
-##
-#
-# OpenSSH sshd
-#
-##
-
-# UseDNS
-#
-# Specifies whether sshd(8) should look up the remote host name and
-# check that the resolved host name for the remote IP address maps
-# back to the very same IP address.  The default is "yes".
-#
-# Comment:
-#
-# This option is mostly useless. Setting it off speeds up logins.
-#
-# If the client machines are out there on the Internet, there is a high
-# chance that they don't have any reverse DNS, their reverse DNS doesn't
-# resolve forward, or their DNS doesn't provide any information other than
-# "belongs to this ISP" which the IP address already tells you.
-#
-# In typical configurations, DNS is only used for logging. It can be used
-# for authentication, but only if IgnoreRhosts no is specified in
-# sshd_config. This is for compatibility with old installations that used
-# rsh, where you can say “the user called bob on the machine called
-# darkstar may log in as alice without showing any credentials” (by writing
-# darkstar bob in ~alice/.rhosts). It is only secure if you trust all the
-# machines that may possibly be connecting to the ssh server. In other
-# words, this is very very rarely usable in a secure way.
-#
-# Given that the DNS lookup doesn't provide any useful information except
-# in very peculiar circumstances, it should be turned off. As far as I can
-# tell, the only reason it's on by default is that it's technically more
-# secure (if you're concerned about authentication, not availability), even
-# though that only applies to a tiny set of circumstances.
-#
-# http://unix.stackexchange.com/questions/56941/what-is-the-point-of-sshd-usedns-option
-#
-UseDNS no
-
-# AcceptEnv
-#
-# Specifies what environment variables sent by the client will be
-# copied into the session's environ(7). See SendEnv in ssh_config(5)
-# for how to configure the client.
-#
-# Note that environment passing is only supported for protocol 2, and
-# that the TERM environment variable is always sent whenever the
-# client requests a pseudo-terminal as it is required by the protocol.
-#
-# Variables are specified by name, which may contain the wildcard
-# characters ‘*’ and ‘?’. Multiple environment variables may be
-# separated by whitespace or spread across multiple AcceptEnv
-# directives.
-#
-# Be warned that some environment variables could be used to bypass
-# restricted user environments. For this reason, care should be taken
-# in the use of this directive.
-#
-# The default is not to accept any environment variables.
-#
-# Comment:
-#
-# We want locale environment variables, such as language settings.
-#
-AcceptEnv LANG LC_*
-
-# PermitTunnel
-#
-# Specifies whether tun(4) device forwarding is allowed. The argument
-# must be “yes”, “point-to-point” (layer 3), “ethernet” (layer 2), or
-# “no”. Specifying “yes” permits both “point-to-point” and “ethernet”.
-#
-# The default is “no”. Independent of this setting, the permissions of
-# the selected tun(4) device must allow access to the user.
-#
-# Comment:
-#
-# We enable the tunnel because it's needed for VPN.
-#
-PermitTunnel yes
+Host *
+# This fixes slow logins. Don't use this if you use Kerberos or GSSAPI.
+GSSAPIAuthentication no
+# This helps prevent disconnects. Equivalent to the ClientAlive* settings on the serve
+ServerAliveInterval 60
+ServerAliveCountMax 120
+# This is counter-intuitive. TCPKeepAlive should be set to no to help eliminate disconnects.
+TCPKeepAlive no
+# Allow agent authentication to chain through more than one server.
+ForwardAgent yes
+# This is equivalent to -X `ssh` option -- limited X11.
+ForwardX11 yes
+# This is equivalent to -Y `ssh` option -- unlimited X11. This can be compromise security.
+# Note that both ForwardX11 and ForwardX11Trusted must be set to yes to silently compromise security.
+# If you set only ForwardX11Trusted to yes then you still must use the '-Y' option on the ssh command-line.
+#ForwardX11Trusted yes
+# This passes some environment variables along to the remote host.
+SendEnv LANG LC_*
