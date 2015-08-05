@@ -164,3 +164,32 @@ ForwardX11 yes
 # Note that both ForwardX11 and ForwardX11Trusted must be set to yes to silently compromise security.
 # If you set only ForwardX11Trusted to yes then you still must use the '-Y' option on the ssh command-line.
 #ForwardX11Trusted yes
+
+# SSH by default automatically presents a public key to the server when
+# trying to authenticate. If the server doesn't know that key, then SSH
+# tries the next one. You can enumerate all of someone's keys this way.
+#
+# To disable this sort of behavior you can disable SSH from sending keys
+# automatically, then tell SSH which identity files need to be sent.
+#
+# In your .ssh/config, something like:
+#
+#     # Ignore SSH keys unless specified in Host subsection
+#     IdentitiesOnly yes
+#
+#     # Send your public key to example.com
+#     Host example.com
+#     IdentityFile ~/.ssh/id_rsa
+#
+# This is also handy if you're security conscious and like to use a different
+# private/public key pair for each host you have an account with, such as:
+#
+#     Host foo.com
+#     IdentityFile ~/.ssh/foo_rsa
+#
+#     Host bar.com
+#     IdentityFile ~/.ssh/bar_rsa
+#
+# For details and credit see https://news.ycombinator.com/item?id=10004678
+#
+IdentitiesOnly yes
