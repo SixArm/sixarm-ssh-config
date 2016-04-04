@@ -1,7 +1,5 @@
 # SixArm.com » SSH » ssh_config file
 
-* Repo: <http://github.com/sixarm/sixarm_ssh_config>
-* Email: Joel Parker Henderson, <joel@sixarm.com>
 
 ## Introduction
 
@@ -11,14 +9,61 @@ Our SSH configuration files are in two repos:
 
   * `sixarm_sshd_config` for the server configuration.
 
-Take what you need, suggest updates as you can, and when you
-do your own Gemfile we recommend specifying your gem versions.
+Take what you need. We welcome suggestions, feedback, and pull requests.
 
-Want to help? We're happy to get pull requests.
+
+## Install
+
+If you're a typical user, then create your SSH directory as needed:
+
+    mkdir -p ~/.ssh
+
+Do you already have an SSH config file?
+
+    ls ~/.ssh/config
+
+If so, then you may want to make a backup:
+
+    cp ~/.ssh/config ~/.ssh/config.backup
+
+Clone:
+
+    git clone https://github.com/sixarm/sixarm_ssh_config
+
+Copy this repo file to your own SSH config file:
+
+    cat sixarm_ssh_config/config >> ~/.ssh/config
+
+Edit as you like, using your own favorite editor:
+
+    edit ~/.ssh/config
+
+
+## Organization
+
+SSH uses one config file; we prefer to use many config files.
+
+We like to organize our SSH config files by using a directory:
+
+    ~/.ssh/config.d
+
+We copy the repo file to a filename that we know will sort first:
+
+    cp ssh_config ~/.ssh/config.d/0.config
+
+We create any subdirectories and any files:
+
+    edit ~/.ssh/config.d/a/b/c.config
+    edit ~/.ssh/config.d/x/y/z.config
+
+Then we generate the main file by joining all the directory's files:
+
+    find ~/.ssh/config.d -name '*.config' -exec cat {} \; > ~/.ssh/config
 
 
 ## Changes
 
+* 2016-04-03 2.0.0 Improve usability
 * 2015-06-30 1.0.0 Publish
 
 

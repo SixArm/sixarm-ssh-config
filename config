@@ -1,6 +1,15 @@
 ##
 # SSH config
 #
+# ## Installation ##
+#
+# This file typically is copied to your own home directory:
+#
+#     cp ~/.ssh/config ~/.ssh/config.backup
+#     cp ssh_config ~/.ssh/config
+#
+# ## Help ##
+#
 # For details about these settings:
 #
 #     man ssh_config
@@ -8,9 +17,38 @@
 #
 # Links to the man pages:
 #
-#  * http://www.openbsd.org/cgi-bin/man.cgi/OpenBSD-current/man5/ssh_config.5
-#  * http://www.openbsd.org/cgi-bin/man.cgi/OpenBSD-current/man5/sshd_config.5
+#   * http://www.openbsd.org/cgi-bin/man.cgi/OpenBSD-current/man5/ssh_config.5
+#   * http://www.openbsd.org/cgi-bin/man.cgi/OpenBSD-current/man5/sshd_config.5
 #
+# ## Organization ##
+#
+# SSH expects all its configuration information in one file.
+#
+# We like to organize our SSH config files by using a directory:
+#
+#     ~/.ssh/config.d
+#
+# We copy this file to a filename that we know will sort first:
+#
+#     cp ssh_config ~/.ssh/config.d/0.config
+#
+# We create any subdirectories and any files:
+#
+#     edit ~/.ssh/config.d/a/b/c.config
+#     edit ~/.ssh/config.d/x/y/z.config
+#
+# Then we generate the main file by joining all the directory's files:
+#
+#     find ~/.ssh/config.d -name '*.config' -exec cat {} \; > ~/.ssh/config
+#
+# ## Tracking ##
+#
+# Content: ssh_config
+# Version: 2.0.0
+# Created: 2015-06-30
+# Updated: 2016-04-03
+# License: GPL
+# Contact: Joel Parker Henderson (joel@joelparkerhenderson.com)
 ##
 
 # SendEnv
