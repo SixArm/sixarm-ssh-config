@@ -5,8 +5,9 @@
 #
 # This file typically is copied to your own home directory:
 #
+#     mkdir -p ~/.ssh
 #     cp ~/.ssh/config ~/.ssh/config.backup
-#     cp ssh_config ~/.ssh/config
+#     cp config ~/.ssh/config
 #
 # ## Help ##
 #
