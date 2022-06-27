@@ -1,13 +1,13 @@
-# SixArm.com » SSH » ssh_config file
+# SixArm.com → Secure Shell (SSH) » configuration file
 
 
 ## Introduction
 
 Our SSH configuration files are in two repos:
 
-  * `sixarm_ssh_config` for the client configuration.
+  * `sixarm-ssh-config` for the client configuration.
 
-  * `sixarm_sshd_config` for the server configuration.
+  * `sixarm-sshd-config` for the server configuration.
 
 Take what you need. We welcome suggestions, feedback, and pull requests.
 
@@ -28,11 +28,11 @@ If so, then you may want to make a backup:
 
 Clone:
 
-    git clone https://github.com/sixarm/sixarm_ssh_config
+    git clone https://github.com/sixarm/sixarm-ssh-config
 
 Copy this repo file to your own SSH config file:
 
-    cat sixarm_ssh_config/config >> ~/.ssh/config
+    cat sixarm-ssh-config/config >> ~/.ssh/config
 
 Edit as you like, using your own favorite editor:
 
@@ -63,6 +63,7 @@ Then we generate the main file by joining all the directory's files:
 
 ## Changes
 
+* 2022-06-27 3.0.0 Rename repos
 * 2016-04-03 2.0.0 Improve usability
 * 2015-06-30 1.0.0 Publish
 
