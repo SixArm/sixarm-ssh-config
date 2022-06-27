@@ -14,7 +14,10 @@ Take what you need. We welcome suggestions, feedback, and pull requests.
 
 ## Install
 
-If you're a typical user, then create your SSH directory as needed:
+
+### For a typical user
+
+Create your SSH directory as needed:
 
     mkdir -p ~/.ssh
 
@@ -32,20 +35,64 @@ Clone:
 
 Copy this repo file to your own SSH config file:
 
-    cat sixarm-ssh-config/config >> ~/.ssh/config
+    cat sixarm-ssh-config/ssh_config >> ~/.ssh/config
 
 Edit as you like, using your own favorite editor:
 
     edit ~/.ssh/config
 
 
+### For all system users
+
+Create your SSH directory as needed:
+
+    mkdir -p /etc/ssh
+
+Do you already have an SSH config file?
+
+    ls /etc/ssh/ssh_config
+
+If so, then you may want to make a backup:
+
+    cp /etc/ssh/ssh_config /etc/ssh/ssh_config.backup
+
+Clone:
+
+    git clone https://github.com/sixarm/sixarm-ssh-config
+
+Copy this repo file to your own SSH config file:
+
+    cat sixarm-ssh-config/ssh_config >> /etc/ssh/ssh_config
+
+Edit as you like, using your own favorite editor:
+
+    edit /etc/ssh/ssh_config
+
+## Help
+
+For details about these settings:
+
+```sh
+man ssh_config
+man sshd_config
+```
+
+Links to the man pages:
+
+* <http://www.openbsd.org/cgi-bin/man.cgi/OpenBSD-current/man5/ssh_config.5>
+
+* <http://www.openbsd.org/cgi-bin/man.cgi/OpenBSD-current/man5/sshd_config.5>
+
+
 ## Organization
 
-SSH uses one config file; we prefer to use many config files.
+SSH historically uses one config file.
 
-We like to organize our SSH config files by using a directory:
+We prefer to use many config files.
 
-    ~/.ssh/config.d
+We like to organize our SSH config files by using directories:
+
+    mkdir -p ~/.ssh/config.d
 
 We copy the repo file to a filename that we know will sort first:
 
