@@ -1,4 +1,4 @@
-# SixArm.com ➤ Secure Shell (SSH) ➤ config file
+# SixArm.com ➤ Secure Shell (SSH) ➤ ssh_config file
 
 
 ## Introduction
