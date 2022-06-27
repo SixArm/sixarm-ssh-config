@@ -1,4 +1,4 @@
-# SixArm.com → Secure Shell (SSH) » configuration file
+# SixArm.com → Secure Shell (SSH) → configuration file
 
 
 ## Introduction
