@@ -1,13 +1,22 @@
 ##
-# SixArm SSH config
+# SixArm.com ➤ Secure Shell (SSH) ➤ ssh_config file
 #
 # ## Installation ##
 #
-# This file typically is copied to your own home directory:
+# The SSHdconfiguration file `ssh_config` is typically either 
+# for the system (i.e. all users) or your own account (i.e. one user).
+#
+# For the system:
+#
+#     mkdir -p /etc/ssh
+#     cp /etc/ssh/ssh_config /etc/ssh/ssh_config.backup
+#     cp ssh_config /etc/ssh/ssh_config
+#
+# For the user:
 #
 #     mkdir -p ~/.ssh
 #     cp ~/.ssh/config ~/.ssh/config.backup
-#     cp config ~/.ssh/config
+#     cp ssh_config ~/.ssh/config
 #
 # ## Help ##
 #
@@ -23,24 +32,32 @@
 #
 # ## Organization ##
 #
-# SSH expects all its configuration information in one file.
+# SSH historically expected all its configuration information in one file.
 #
-# We like to organize our SSH config files by using a directory:
+# We prefer to organize our config files by using directories.
 #
-#     mkdir -p ~/.ssh/config.d
+# For the system:
+#
+#     mkdir -p /etc/ssh/ssh_config.d
+#     mkdir -p /etc/ssh/sshd_config.d
+#
+# For the user:
+#
+#     mkdir -p ~/.ssh/ssh_config.d
+#     mkdir -p ~/.ssh/sshd_config.d
 #
 # We copy this file to a filename that we know will sort first:
 #
-#     cp ssh_config ~/.ssh/config.d/0.config
+#     cp ssh_config ~/.ssh/ssh_config.d/0.config
 #
 # We create any subdirectories and any files:
 #
-#     edit ~/.ssh/config.d/a/b/c.config
-#     edit ~/.ssh/config.d/x/y/z.config
+#     edit ~/.ssh/ssh_config.d/a/b/c.config
+#     edit ~/.ssh/ssh_config.d/x/y/z.config
 #
 # Then we generate the main file by joining all the directory's files:
 #
-#     find ~/.ssh/config.d -name '*.config' -exec cat {} \; > ~/.ssh/config
+#     find ~/.ssh/ssh_config.d -name '*.config' -exec cat {} \; > ~/.ssh/config
 #
 # ## Tracking ##
 #
@@ -297,4 +314,3 @@ Host *
 # XAuthLocation added by XQuartz (https://www.xquartz.org)
 Host *
     XAuthLocation /opt/X11/bin/xauth
-
