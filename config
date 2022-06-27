@@ -1,5 +1,5 @@
 ##
-# SSH config
+# SixArm SSH config
 #
 # ## Installation ##
 #
@@ -27,7 +27,7 @@
 #
 # We like to organize our SSH config files by using a directory:
 #
-#     ~/.ssh/config.d
+#     mkdir -p ~/.ssh/config.d
 #
 # We copy this file to a filename that we know will sort first:
 #
@@ -44,11 +44,11 @@
 #
 # ## Tracking ##
 #
-# Content: ssh_config
-# Version: 2.0.0
+# Package: sixarm-ssh-config
+# Version: 3.0.0
 # Created: 2015-06-30
-# Updated: 2016-04-03
-# License: GPL
+# Updated: 2022-06-27
+# License: GPL-2.0-or-later, or for a custom license contact us
 # Contact: Joel Parker Henderson (joel@joelparkerhenderson.com)
 ##
 
